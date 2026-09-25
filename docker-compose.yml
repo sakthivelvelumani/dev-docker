@@ -1,0 +1,51 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sakthi-u24:build
+    container_name: rfsim-test
+    user: root
+    ports:
+      - "8888:8888"
+    shm_size: '8g'
+    privileged: true
+
+    # Bind-mount your project from the host
+    # Edit HOST_PROJECT_PATH in .env, or export it before running compose.
+    # Default assumes this docker-compose.yml lives next to your project dir.
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - ${HOST_PROJECT_PATH:-./workspace}:/workspace
+
+    networks:
+      public_net:
+        ipv4_address: 192.168.70.190
+    # Keep the container alive for interactive use
+    stdin_open: true
+    tty: true
+
+    # Optional: shared network with other containers (e.g. a radio simulator)
+    # network_mode: host
+
+    # Optional: allow perf / ptrace inside the container
+    cap_add:
+      - SYS_PTRACE
+      - NET_ADMIN
+      - NET_RAW
+    ulimits:
+      rtprio:
+        soft: 99
+        hard: 99
+      rttime:
+        soft: -1   # unlimited
+        hard: -1
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    security_opt:
+      - seccomp=unconfined
+
+networks:
+  public_net:
+    external: true
+    name: oai-cn5g-public-net
