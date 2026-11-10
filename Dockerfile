@@ -132,6 +132,14 @@ RUN git clone https://github.com/EttusResearch/uhd.git && \
     make install
 
 RUN ldconfig
+
+# Install npm and opencode
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates curl gnupg git ripgrep \
+ && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+ && apt-get install -y --no-install-recommends nodejs \
+ && npm install -g opencode-ai@1.19.5 \
+ && rm -rf /var/lib/apt/lists/*
  
 # Working directory (will be bind-mounted from host)
 ENV PROJECT_DIR=/workspace

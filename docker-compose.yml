@@ -21,6 +21,7 @@ services:
     networks:
       public_net:
         ipv4_address: 192.168.70.190
+      llm: {}
     # Keep the container alive for interactive use
     stdin_open: true
     tty: true
@@ -52,3 +53,5 @@ networks:
   public_net:
     external: true
     name: oai-cn5g-public-net
+  llm:
+    external: true
