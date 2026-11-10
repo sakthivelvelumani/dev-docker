@@ -25,6 +25,9 @@ services:
     stdin_open: true
     tty: true
 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
     # Optional: shared network with other containers (e.g. a radio simulator)
     # network_mode: host
 
